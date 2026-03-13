@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import 'screens/home_screen.dart';
+import 'screens/main_screen.dart';
+import 'services/notification_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize sqflite for desktop (Linux)
+  sqfliteFfiInit();
+
+  await NotificationService.init();
+
   runApp(const FinanceTrackerApp());
 }
 
@@ -15,7 +24,7 @@ class FinanceTrackerApp extends StatelessWidget {
       title: 'Finance Tracker',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.teal),
-      home: const HomeScreen(),
+      home: const MainScreen(),
     );
   }
 }

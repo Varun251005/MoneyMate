@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
@@ -14,6 +15,9 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDB(String filePath) async {
+    // Use FFI factory for desktop platforms
+    databaseFactory = databaseFactoryFfi;
+
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
@@ -28,6 +32,15 @@ class DatabaseHelper {
       amount REAL,
       category TEXT,
       note TEXT,
+      date TEXT
+    )
+    ''');
+
+    await db.execute('''
+    CREATE TABLE emi(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT,
+      amount REAL,
       date TEXT
     )
     ''');
@@ -46,5 +59,15 @@ class DatabaseHelper {
   Future<int> deleteTransaction(int id) async {
     final db = await instance.database;
     return await db.delete('transactions', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> insertEmi(Map<String, dynamic> row) async {
+    final db = await instance.database;
+    return await db.insert('emi', row);
+  }
+
+  Future<List<Map<String, dynamic>>> getEmi() async {
+    final db = await instance.database;
+    return await db.query('emi', orderBy: 'id DESC');
   }
 }
