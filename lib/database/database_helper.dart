@@ -1,6 +1,6 @@
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqflite/sqflite.dart';
+import 'dart:io' show Platform;
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
@@ -15,13 +15,24 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDB(String filePath) async {
-    // Use FFI factory for desktop platforms
-    databaseFactory = databaseFactoryFfi;
+    try {
+      final dbPath = await getDatabasesPath();
+      final path = join(dbPath, filePath);
 
-    final dbPath = await getDatabasesPath();
-    final path = join(dbPath, filePath);
+      return await openDatabase(
+        path,
+        version: 1,
+        onCreate: _createDB,
+        onUpgrade: _onUpgrade,
+      );
+    } catch (e) {
+      print('Database initialization error: $e');
+      rethrow;
+    }
+  }
 
-    return await openDatabase(path, version: 1, onCreate: _createDB);
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    // Handle future database upgrades here
   }
 
   Future _createDB(Database db, int version) async {
@@ -69,5 +80,10 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> getEmi() async {
     final db = await instance.database;
     return await db.query('emi', orderBy: 'id DESC');
+  }
+
+  Future<int> deleteEmi(int id) async {
+    final db = await instance.database;
+    return await db.delete('emi', where: 'id = ?', whereArgs: [id]);
   }
 }
