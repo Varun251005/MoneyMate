@@ -20,12 +20,6 @@ Thank you for your interest in contributing!
 
 ## Reporting Bugs
 
-Use the GitHub Issues tab with the **bug** label. Include:
-- Flutter version (`flutter --version`)
-- Device/OS info
-- Steps to reproduce
-- Expected vs actual behavior
-
-## Feature Requests
+Use the GitHub Issues ta
 
 Open an issue with the **enhancement** label and describe the use case.
