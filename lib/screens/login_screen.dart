@@ -38,6 +38,14 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Logo Image
+              Image.asset(
+                'assets/images/moneymate.png',
+                width: 150,
+                height: 150,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: 30),
               const Text(
                 'Money Mate',
                 style: TextStyle(

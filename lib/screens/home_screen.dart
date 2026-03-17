@@ -177,17 +177,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: transactions.length,
                   itemBuilder: (context, index) {
                     final transaction = transactions[index];
-                    return TransactionCard(
-                      transaction: transaction,
-                      onDelete: () async {
-                        await DatabaseHelper.instance.deleteTransaction(
-                          transaction['id'],
-                        );
-                        _loadData();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Transaction deleted')),
-                        );
+                    return InkWell(
+                      onTap: () {
+                        _showTransactionDetails(context, transaction);
                       },
+                      child: TransactionCard(
+                        transaction: transaction,
+                        onDelete: () async {
+                          await DatabaseHelper.instance.deleteTransaction(
+                            transaction['id'],
+                          );
+                          _loadData();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Transaction deleted'),
+                            ),
+                          );
+                        },
+                      ),
                     );
                   },
                 ),
@@ -261,6 +268,128 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       ),
+    );
+  }
+
+  void _showTransactionDetails(
+    BuildContext context,
+    Map<String, dynamic> transaction,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            'Transaction Details',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Title/Category
+                _buildDetailRow(
+                  'Title',
+                  transaction['category']?.toString() ?? 'Other',
+                ),
+                const SizedBox(height: 12),
+
+                // Amount
+                _buildDetailRow(
+                  'Amount',
+                  '₹${transaction['amount'].toStringAsFixed(2)}',
+                  isAmount: true,
+                  isIncome: transaction['type'] == 'income',
+                ),
+                const SizedBox(height: 12),
+
+                // Category
+                _buildDetailRow(
+                  'Category',
+                  transaction['category']?.toString() ?? 'Other',
+                ),
+                const SizedBox(height: 12),
+
+                // Date
+                _buildDetailRow(
+                  'Date',
+                  transaction['date']?.toString() ?? 'No date',
+                ),
+                const SizedBox(height: 12),
+
+                // Type
+                _buildDetailRow(
+                  'Type',
+                  transaction['type'] == 'income' ? 'Income' : 'Expense',
+                  isType: true,
+                  isIncome: transaction['type'] == 'income',
+                ),
+                const SizedBox(height: 12),
+
+                // Description/Note
+                _buildDetailRow(
+                  'Description',
+                  transaction['note']?.toString().isNotEmpty == true
+                      ? transaction['note']
+                      : 'No description provided',
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Close',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildDetailRow(
+    String label,
+    String value, {
+    bool isAmount = false,
+    bool isType = false,
+    bool isIncome = false,
+  }) {
+    Color valueColor = Colors.grey[700] ?? Colors.grey;
+
+    if (isAmount) {
+      valueColor = isIncome ? Colors.green : Colors.red;
+    } else if (isType) {
+      valueColor = isIncome ? Colors.green : Colors.red;
+    }
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '$label: ',
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+            color: Colors.grey,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 14,
+              color: valueColor,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
