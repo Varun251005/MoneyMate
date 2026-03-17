@@ -270,12 +270,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 Created as a modern financial management solution for personal use and learning.
 
-## 📞 Support
-
-For issues, feature requests, or questions:
-- Open an issue on GitHub
-- Check existing documentation
-
 ## 🎯 Future Enhancements
 
 - [ ] Cloud backup with Firebase
