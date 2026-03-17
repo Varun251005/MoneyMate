@@ -17,8 +17,5 @@ All notable changes to MoneyMate will be documented here.
 - Month-wise transaction filtering
 - Category-wise expense breakdown
 
-## [0.8.0] - 2025-01-05
-### Added
-- Add/Edit/Delete transactions
-- Income and expense categorization
-- Basic dashboard with balance summary
+## [0.8.0] -
+\
