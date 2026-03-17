@@ -293,7 +293,7 @@ Created as a modern financial management solution for personal use and learning.
 - Dark/Light theme support
 - All core features implemented
 
----
+---------------------------------
 
 **Happy Budgeting with MoneyMate! 💰**
 
