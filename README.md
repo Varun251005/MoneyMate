@@ -104,7 +104,6 @@ flutter run
 open -a Simulator
 flutter run -d all
 ```
-
 **For Physical Device:**
 ```bash
 flutter run
