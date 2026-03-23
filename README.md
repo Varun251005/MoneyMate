@@ -296,4 +296,5 @@ Created as a modern financial management solution for personal use and learning.
 ---------------------------------
 
 **Happy Budgeting with MoneyMate! 💰**
+.................................
 
