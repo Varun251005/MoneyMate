@@ -265,9 +265,7 @@ Configure notification timing in `lib/services/notification_service.dart`
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 👨‍💻 Developer
 
-Created as a modern financial management solution for personal use and learning.
 
 ## 🎯 Future Enhancements
 
